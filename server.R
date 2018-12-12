@@ -43,37 +43,7 @@ data2017 <- data.table(
 )
 shinyServer(function(input, output, session){
   
-  # When we change from one `tabPanel` to another, update the URL hash 
-  observeEvent(input$tabs, { 
-    # No work to be done if input$tabs and the hash are already the same 
-    if (getUrlHash() == input$tabs) return() 
-    
-    # The 'push' argument is necessary so that the hash change event occurs and 
-    # so that the other observer is triggered. 
-    updateQueryString(
-      paste0(getQueryString(), input$tabs), 
-      "push" 
-    ) 
-    # Don't run the first time so as to not generate a circular dependency 
-    # between the two observers 
-  }, ignoreInit = TRUE) 
-  
-  # When the hash changes (due to clicking on the link in the sidebar or switching 
-  # between the `tabPanel`s), switch tabs and update an input. Note that clicking 
-  # another `tabPanel` already switches tabs. 
-  observeEvent(getUrlHash(), { 
-    hash <- getUrlHash() 
-    
-    # No work to be done if input$tabs and the hash are already the same 
-    if (hash == input$tabs) return() 
-    
-    valid <- c("#panel1", "#panel2", "#panel3", "#panel4", "#panel5", "#panel6", "#panel7") 
-    
-    if (hash %in% valid) { 
-      updateTabsetPanel(session, "tabs", hash) 
-    } 
-  })
-
+ 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#  
   
