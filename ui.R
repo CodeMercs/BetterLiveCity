@@ -39,7 +39,8 @@ shinyUI(
 										<header>
 											<h1>溫濕度分析</h1>
 											<p>使用者可以依據這個系統了解各地區的舒適程度</p>
-										</header>
+                      <p>資料來源：中央氣象局</p>
+                    </header>
 									</div>
 								</section>
 
@@ -50,9 +51,9 @@ shinyUI(
          "),
     sidebarLayout(
       sidebarPanel(
-        helpText("資料依年份分組，資料來源：中央氣象局"),           
+        helpText("資料依年份分組"),           
         selectInput("select", "選擇地區:", choices=explot[[theFiles[109]]][,1]),
-        selectInput("selectdate", "選擇月份:", choices=unique(substring(theFiles,4,7))),
+        selectInput("selectdate", "選擇年份:", choices=unique(substring(theFiles,4,7))),
         hr()),
       
       mainPanel(column(6,
@@ -61,6 +62,7 @@ shinyUI(
                        verbatimTextOutput("max"),
                        verbatimTextOutput("min"),
                        verbatimTextOutput("mean")
+                       #,verbatimTextOutput("rank")
       ))),plotOutput("exPlot"),
         HTML("
          </section>
@@ -71,16 +73,17 @@ shinyUI(
 										<h2>平均濕度分析</h2>
              </header>
          "),sidebarLayout( 
-           sidebarPanel(helpText("資料依年份分組，資料來源：中央氣象局"),           
+           sidebarPanel(helpText("資料依年份分組"),           
                         selectInput("select2", "選擇地區:", choices=explot[[theFiles[109]]][,1]),
-                        selectInput("selectdate2", "選擇月份:", choices=unique(substring(theFiles,4,7))),
+                        selectInput("selectdate2", "選擇年份:", choices=unique(substring(theFiles,4,7))),
                         hr()),
            mainPanel(column(6,
                             verbatimTextOutput("dateText21"),
                             verbatimTextOutput("dateText22"),
                             verbatimTextOutput("max2"),
                             verbatimTextOutput("min2"),
-                            verbatimTextOutput("mean2")
+                            verbatimTextOutput("mean2"),
+                            verbatimTextOutput("rank2")
            ))),plotOutput("exPlot2"),
       HTML("
          </section>
@@ -88,11 +91,15 @@ shinyUI(
          <!-- Section -->
          <section>
          <header class=\"major\">
-         <h2>各地區溫度排名</h2>
+         <h2>各地區濕度排名</h2>
          </header>
          <div class=\"posts\">
          <article>
-         "),tableOutput("view"),
+         "),sidebarLayout(sidebarPanel(helpText("資料依年份分組"),           
+                                       selectInput("tvSelectDATE", "選擇年份:", choices=unique(substring(theFiles,4,7))),
+                                       hr()),
+                          mainPanel(tableOutput("view"))
+                          ),
         HTML("
          </article>
          </div>

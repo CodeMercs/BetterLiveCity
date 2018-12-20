@@ -28,19 +28,23 @@ for ( area in c(1:length(explot[[theFiles[109]]][,1]))) {
   )
   
 }
-minlist2017 <-c()
-date2017 <- c()
-abs2017<-c()
-for(a in  c(1:length(explot[[theFiles[109]]][,1]))){
-  abs2017[a]    <- abs(ophren[[a]][grepl("2017",TIME),min(CHA)]- 50)
-  minlist2017[a]<-ophren[[a]][grepl("2017",TIME),min(CHA)]
-  date2017[a] <- explot[[theFiles[109]]][,1][a]
+datalist <- list()
+for(dateyear in unique(substring(theFiles,4,7))){
+  meanvector <-c()
+  datevector <- c()
+  absvector<-c()
+  for (a in  c(1:length(explot[[theFiles[109]]][,1]))) {
+    absvector[a]    <- abs(ophren[[a]][grepl(dateyear,TIME),mean(CHA)]- 50)
+    meanvector[a]<-ophren[[a]][grepl(dateyear,TIME),mean(CHA)]
+    datevector[a] <- explot[[theFiles[109]]][,1][a]
+    datavector<-data.table(
+      ABS = absvector,
+      CHA =meanvector,
+      AERA = datevector
+    )
+  }
+  datalist[[dateyear]] <-datavector
 }
-data2017 <- data.table(
-  ABS = abs2017,
-  CHA =minlist2017,
-  AERA = date2017
-)
 shinyServer(function(input, output, session){
   
  
@@ -72,11 +76,14 @@ shinyServer(function(input, output, session){
   output$mean  <- renderText({
     paste0("年平均溫度：", ophren[[input$select]][grepl(input$selectdate,TIME),mean(TAVE)])
   })
+  #output$rank  <- renderText({
+   # paste0("該年平均濕度地區排名：",datalist[[input$selectdate]][order(ABS),.(c(1:length(explot[[theFiles[109]]][,1])),AERA,CHA)][grepl(input$select,AERA)])
+  #})
   output$dateText21  <- renderText({
-    paste0("地區：", input$select)
+    paste0("地區：", input$select2)
   })
   output$dateText22  <- renderText({
-    paste0("年份：", input$selectdate)
+    paste0("年份：", input$selectdate2)
   })
   output$max2  <- renderText({
     paste0("年最高濕度：", ophren[[input$select2]][grepl(input$selectdate2,TIME),max(CHA)])
@@ -87,14 +94,17 @@ shinyServer(function(input, output, session){
   output$mean2  <- renderText({
     paste0("年平均濕度：", ophren[[input$select2]][grepl(input$selectdate2,TIME),mean(CHA)])
   })
+  output$rank2  <- renderText({
+    paste0("該年平均濕度地區排名：",datalist[[input$selectdate2]][order(ABS),.(c(1:length(explot[[theFiles[109]]][,1])),AERA,CHA)][grepl(input$select2,AERA),V1])
+  })
   output$viewtext <-renderText({
     "最佳濕度：40~60"
   })
   output$view  <- renderTable({
     data.table(
       排名= c(1:29),
-      地區= data2017[order(ABS)]$AERA,
-      平均濕度 = data2017[order(ABS)]$CHA
+      地區= datalist[[input$tvSelectDATE]][order(ABS)]$AERA,
+      平均濕度 = datalist[[input$tvSelectDATE]][order(ABS)]$CHA
     )
       })
   output$exPlot<-renderPlot({
