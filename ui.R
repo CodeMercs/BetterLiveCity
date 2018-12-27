@@ -62,8 +62,9 @@ shinyUI(
                        verbatimTextOutput("max"),
                        verbatimTextOutput("min"),
                        verbatimTextOutput("mean")
-                       #,verbatimTextOutput("rank")
-      ))),plotOutput("exPlot"),
+                       ,verbatimTextOutput("rank")
+      ))),
+    #plotOutput("exPlot"),
         HTML("
          </section>
          
@@ -84,7 +85,8 @@ shinyUI(
                             verbatimTextOutput("min2"),
                             verbatimTextOutput("mean2"),
                             verbatimTextOutput("rank2")
-           ))),plotOutput("exPlot2"),
+           ))),
+    #plotOutput("exPlot2"),
       HTML("
          </section>
          
