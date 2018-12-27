@@ -46,7 +46,6 @@ shinyUI(
 
          <section>
 <header class=\"major\">
-										<h2>平均溫度分析</h2>
          </header>
          "),
     sidebarLayout(
@@ -56,51 +55,32 @@ shinyUI(
         selectInput("selectdate", "選擇年份:", choices=unique(substring(theFiles,4,7))),
         hr()),
       
-      mainPanel(column(6,
-                       verbatimTextOutput("dateText1"),
-                       verbatimTextOutput("dateText2"),
+      mainPanel(verbatimTextOutput("dateText1"),
+                verbatimTextOutput("dateText2")
+                ,column(6,
                        verbatimTextOutput("max"),
                        verbatimTextOutput("min"),
                        verbatimTextOutput("mean")
                        ,verbatimTextOutput("rank")
+      ),column(6,
+               verbatimTextOutput("max2"),
+               verbatimTextOutput("min2"),
+               verbatimTextOutput("mean2"),
+               verbatimTextOutput("rank2")
       ))),
-    #plotOutput("exPlot"),
-        HTML("
-         </section>
-         
-         <!-- Section -->
-         <section>
-<header class=\"major\">
-										<h2>平均濕度分析</h2>
-             </header>
-         "),sidebarLayout( 
-           sidebarPanel(helpText("資料依年份分組"),           
-                        selectInput("select2", "選擇地區:", choices=explot[[theFiles[109]]][,1]),
-                        selectInput("selectdate2", "選擇年份:", choices=unique(substring(theFiles,4,7))),
-                        hr()),
-           mainPanel(column(6,
-                            verbatimTextOutput("dateText21"),
-                            verbatimTextOutput("dateText22"),
-                            verbatimTextOutput("max2"),
-                            verbatimTextOutput("min2"),
-                            verbatimTextOutput("mean2"),
-                            verbatimTextOutput("rank2")
-           ))),
-    #plotOutput("exPlot2"),
+    plotOutput("exPlot"),plotOutput("exPlot2"),
       HTML("
-         </section>
-         
          <!-- Section -->
          <section>
          <header class=\"major\">
-         <h2>各地區濕度排名</h2>
+         <h2>各地區溫濕度排名</h2>
          </header>
          <div class=\"posts\">
          <article>
          "),sidebarLayout(sidebarPanel(helpText("資料依年份分組"),           
                                        selectInput("tvSelectDATE", "選擇年份:", choices=unique(substring(theFiles,4,7))),
-                                       hr()),
-                          mainPanel(tableOutput("view"))
+                                       hr(),width = 10),
+                          mainPanel(tableOutput("view"),width = 18)
                           ),
         HTML("
          </article>
