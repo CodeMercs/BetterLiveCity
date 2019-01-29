@@ -133,3 +133,4 @@ alltable[grepl('2014',TIME)&grepl('嘉義',AREA)]$TIME
 #                                                                                                                                                                                                                                                                                                                                                                                                 axis.text.x = element_text(angle = 60, family = "宋體-繁 細體", hjust = 1),
 #                                                                                                                                                                                                                                                                                                                                                                                                 axis.title.x = element_text(family = "宋體-繁 細體"))
 
+
